@@ -176,6 +176,20 @@ License: For each use you must have a valid license purchased only from above li
                                 </a>
                             </li>
 
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="link-icon" data-feather="mail"></i>
+                                    <span class="menu-title">Others</span>
+                                    <i class="link-arrow"></i>
+                                </a>
+                                <div class="submenu">
+                                    <ul class="submenu-item">
+                                        <li class="nav-item"><a class="nav-link" 
+                                        href="<?php echo _route('adrs-src:createOrEdit')?>">Address Source</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+
                             <?php if(isEqual($auth->user_type, ['admin'])) :?>
                             <li class="nav-item">
                                 <a href="/ReportController/create" class="nav-link">
