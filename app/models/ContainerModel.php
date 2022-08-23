@@ -25,8 +25,12 @@
         }
 
         public function getList($params = []) {
+            $where = null;
+            if(isset($params['where'])) {
+                $where = " WHERE ".parent::conditionConvert($params['where']);
+            }
             $this->db->query(
-                "SELECT container.container_label,
+                "SELECT container.id as container_id, container.container_label,
                     container.container_type,
                     cx.full_name,
                     cx.id as cx_id,
@@ -37,8 +41,18 @@
                     LEFT JOIN customers as cx
                     ON cx.id = container.customer_id
                     LEFT JOIN platforms as pl
-                    ON pl.id = cx.parent_id"
+                    ON pl.id = cx.parent_id
+                    {$where}"
             );
             return $this->db->resultSet();
+        }
+
+        public function get($id) {
+            $container = $this->getList([
+                'where' => [
+                    'container.id' => $id
+                ]
+            ]);
+            return $container ? $container[0] : false;
         }
     }

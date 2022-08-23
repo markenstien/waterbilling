@@ -339,6 +339,13 @@
         return is_null($key) ? $auth : $auth->$key;
     }
 
+    function amountConvert($amount, $type = 'ADD') {
+        if($type == 'ADD' && $amount >= 0)
+            return $amount;
+
+        return $amount*-1;
+    }
+
     function getRowObject($arrayObject , $property)
 	{
 		$arrayOfObjects = array();

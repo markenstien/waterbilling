@@ -94,7 +94,8 @@
 		'delete' => $controller.'/destroy',
 		'download' => $controller.'/download',
 		'show'   => $controller.'/show',
-		'savePayment'  => $controller.'/savePayment'
+		'savePayment'  => $controller.'/savePayment',
+		'deliverOrPickup' => $controller.'/deliverOrPickup'
 	];
 
 	$controller = '/ReceiptController';

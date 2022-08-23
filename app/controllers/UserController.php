@@ -15,7 +15,7 @@
 			$this->data['address'] = new AddressForm();
 			$this->data['containerForm'] = new ContainerForm();
 			$this->model = model('UserModel');
-			
+			$this->transaction = model('TransactionModel');
 			$this->customerModel = model('CustomerModel');
 			$this->addressModel = model('AddressModel');
 			$this->platformModel = model('PlatformModel');
@@ -60,9 +60,8 @@
 			$this->data['containerForm']->setValue('platform_id', $customer->parent_id);
 			$this->data['containerForm']->setValue('customer_id', $customer->id);
 			$this->data['containerForm']->setValue('container_label',"({$customer->adrs_str_abbr})-");
-
 			$this->data['containers'] = $this->customerModel->getContainers($customerId);
-
+			$this->data['balance'] = $this->transaction->getTotalByCustomer($customerId);
 			return $this->view('user/show_customer', $this->data);
 		}
 		public function index()

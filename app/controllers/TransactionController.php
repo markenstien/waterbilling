@@ -2,70 +2,49 @@
 
     use Form\PaymentForm;
     use Form\PaymentOnlineForm;
-    use Form\PurchaseItemForm;
     use Services\OrderService;
+    use Services\TransactionService;
 
-    load(['PurchaseItemForm','PaymentForm','PaymentOnlineForm'], APPROOT.DS.'form');
-    load(['OrderService'], APPROOT.DS.'services');
+    load(['PaymentForm','PaymentOnlineForm'], APPROOT.DS.'form');
+    load(['OrderService', 'TransactionService'], APPROOT.DS.'services');
     class TransactionController extends Controller
     {
         
         public function __construct()
         {
-            $this->model = model('OrderItemModel');
+            parent::__construct();
             $this->paymentForm = new PaymentForm();
             $this->paymentOnlineForm = new PaymentOnlineForm();
-
-            $this->order = model('OrderModel');
+            $this->container = model('ContainerModel');
+            $this->transaction = model('TransactionModel');
+        }
+        
+        public function index() {
+            $this->data['containers'] = $this->container->getList();
+            $this->data['action'] = [
+                'delivery' => TransactionService::DELIVERY,
+                'pick_up' => TransactionService::PICKUP
+            ];
+            return $this->view('transaction/index', $this->data);
         }
 
+        public function deliverOrPickup(){
+            $request = request()->inputs();
+
+            if(isEqual($request['action'], TransactionService::DELIVERY)) {
+                $action_taken = TransactionService::DELIVERY;
+            }else{
+                $action_taken = TransactionService::PICKUP;
+            }
+            $container = $this->container->get($request['id']);
+
+            $this->transaction->pickUpOrDelivery($container, $action_taken);
+        }
         /**
          * purchasing action
          */
         public function purchase() {
-            $purchaseSession = OrderService::getPurchaseSession();
-
-            if (empty($purchaseSession)) {
-                OrderService::startPurchaseSession();
-            }
-
-            $request = request()->inputs();
-            if (isSubmitted()) {
-                $res = $this->model->addOrUpdatePurchaseItem($request, $request['id'] ?? null);
-                if (!$res) {
-                    Flash::set($this->model->getErrorString(), 'danger');
-                } else {
-                    Flash::set("Item added");
-                }
-                return redirect(_route('transaction:purchase'));
-            }
-
-            $items = $this->model->getCurrentSession();
-            $purchaseItemForm = new PurchaseItemForm();
-
-            if (isset($request['action'], $request['id'])) {
-                if ($request['action'] == 'edit_item') {
-                    $item = $this->model->get($request['id']);
-                    $purchaseItemForm->setValueObject($item);
-                    $purchaseItemForm->addItem($item->item_id);
-                }
-
-                if($request['action'] == 'delete_item') {
-                    $this->model->deleteItem($request['id']);
-                    Flash::set("Item Removed");
-                    return redirect(_route('transaction:purchase'));
-                }
-            }
-            $this->data['items'] = $items;
-            $this->data['session'] = OrderService::getPurchaseSession();
-            //get total
-            $totalAmountToPay = $this->model->getItemTotal($items);
-            $this->paymentForm->setValue('amount',$totalAmountToPay);
-            $this->data['totalAmountToPay'] = $totalAmountToPay;
-            $this->data['purchase_item_form'] = $purchaseItemForm;
-            $this->data['paymentForm'] = $this->paymentForm;
-            $this->data['paymentOnlineForm'] = $this->paymentOnlineForm;
-            return $this->view('transaction/purchase',$this->data);
+           
         }
 
         public function purchaseResetSession(){

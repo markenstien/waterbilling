@@ -1,3 +1,4 @@
+drop table if exists payments;
 create table payments(
     id int(10) not null primary key auto_increment,
     parent_id int(10) not null,
@@ -9,7 +10,7 @@ create table payments(
     approval_date datetime default null ON UPDATE now(),
     approval_by int(10) default null,
     created_by int(10),
-    created_at timestamp decimal now() ON UPDATE now()
+    created_at timestamp default now() ON UPDATE now()
 );
 
 /*

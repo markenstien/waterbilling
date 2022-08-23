@@ -12,6 +12,10 @@
                                 <td><?php echo $customer->full_name?></td>
                             </tr>
                             <tr>
+                                <td>Balance : </td>
+                                <td><?php echo $balance?></td>
+                            </tr>
+                            <tr>
                                 <td>Address : </td>
                                 <td><?php echo $customer->full_address?></td>
                             </tr>
