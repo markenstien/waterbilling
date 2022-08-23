@@ -1,7 +1,9 @@
 drop table if exists payments;
 create table payments(
     id int(10) not null primary key auto_increment,
-    parent_id int(10) not null,
+    reference varchar(50),
+    customer_id int(10),
+    parent_id int(10),
     parent_type varchar(50),
     amount decimal(10,2),
     payment_method varchar(25),

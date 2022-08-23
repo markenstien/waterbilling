@@ -1,23 +1,30 @@
 <?php
 
+use function PHPSTORM_META\map;
+
     class PaymentModel extends Model
     {
         public $table = 'payments';
         public $_fillables = [
-            'order_id',
+            'parent_id',
+            'parent_key',
+            'amount',
             'reference',
             'amount',
             'payment_method',
-            'payer_name',
-            'mobile_number',
-            'address',
-            'remarks',
-            'organization',
-            'account_number',
-            'external_reference',
-            'created_by'
+            'payment_reference',
+            'approval_status',
+            'approved_by',
+            'created_by',
+            'created_at'
         ];
 
+        public function create($paymentData) {
+            $_fillables = parent::getFillablesOnly($paymentData);
+            $_fillables['reference'] = $this->generateRefence();
+            $_fillables['amount'] = amountConvert($_fillables['amount'], 'ADD');
+            return parent::store($_fillables);
+        }   
         public function createOrUpdate($paymentData, $id = null) {
             $_fillables = parent::getFillablesOnly($paymentData);
 

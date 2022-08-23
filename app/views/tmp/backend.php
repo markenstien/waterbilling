@@ -41,11 +41,8 @@ License: For each use you must have a valid license purchased only from above li
 <!-- Layout styles -->  
 <link rel="stylesheet" href="<?php echo _path_tmp('assets/css/demo3/style.css')?>">
 <!-- End layout styles -->
-
 <link rel="shortcut icon" href="<?php echo _path_tmp('assets/images/favicon.png')?>" />
-
   <?php produce('styles')?>
-  
 </head>
 <body>
     <?php $auth = auth()?>
@@ -205,19 +202,14 @@ License: For each use you must have a valid license purchased only from above li
         <!-- partial -->
     
         <div class="page-wrapper">
-
             <div class="page-content">
                 <?php echo produce('content')?>
             </div>
-
-            <!-- partial:../../partials/_footer.html -->
             <footer class="footer border-top">
         <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between py-3 small">
           <p class="text-muted mb-1 mb-md-0">Copyright © 2021 <?php echo COMPANY_NAME?>.</p>
         </div>
             </footer>
-            <!-- partial -->
-    
         </div>
     </div>
 

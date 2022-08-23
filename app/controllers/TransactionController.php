@@ -37,8 +37,18 @@
                 $action_taken = TransactionService::PICKUP;
             }
             $container = $this->container->get($request['id']);
+            
+            $res = $this->transaction->pickUpOrDelivery($container, $action_taken);
 
-            $this->transaction->pickUpOrDelivery($container, $action_taken);
+            if($res) {
+                Flash::set("{$action_taken} Success");
+                return redirect(_route('payment:create', null, [
+                    'customerId' => $container->customer_id
+                ]));
+            } else {
+                Flash::set($this->transaction->getErrorString(), 'danger');
+                return request()->return();
+            }
         }
         /**
          * purchasing action
