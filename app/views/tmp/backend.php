@@ -149,6 +149,12 @@ License: For each use you must have a valid license purchased only from above li
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="<?php echo _route('transaction:index')?>">
+                                    <i class="link-icon" data-feather="box"></i>
+                                    <span class="menu-title">Transaction</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="<?php echo _route('platform:index')?>">
                                     <i class="link-icon" data-feather="box"></i>
                                     <span class="menu-title">Platforms</span>
