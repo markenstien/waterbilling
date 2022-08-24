@@ -1,13 +1,10 @@
 <?php
 	use Form\AttachmentForm;
 	use Form\FormCommon;
-
 	load(['AttachmentForm','FormCommon'] , APPROOT.DS.'form');
 	class Controller
 	{	
-
 		protected $_attachmentForm = null;
-
 		//temporary
 		public $is_admin = false;
 

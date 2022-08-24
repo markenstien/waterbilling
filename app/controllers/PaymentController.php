@@ -37,9 +37,12 @@ use Services\TransactionService;
                         ]);
                     }
                 }
-            }
-            $customerId = $request['customerId'];
 
+                Flash::set(TransactionService::PAYMENT . ' Successfull');
+                return redirect(_route('transaction:index'));
+            }
+
+            $customerId = $request['customerId'];
             $amountToPay = $this->transaction->getTotalByCustomer($customerId);
             $customer = $this->customer->get($customerId);
             $this->data['amountToPay'] = $amountToPay;

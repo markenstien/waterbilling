@@ -4,6 +4,7 @@
 		public function __construct()
 		{
 			$this->user_model = model('UserModel');
+			authRequired();
 		}
 
 		public function index()

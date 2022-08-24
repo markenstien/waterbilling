@@ -1,5 +1,4 @@
 <?php 
-	
 	load(['UserForm'] , APPROOT.DS.'form');
 	use Form\UserForm;
 
@@ -23,10 +22,10 @@
 				$post = request()->posts();
 				$res = $this->user->authenticate($post['username'] , $post['password']);
 				if(!$res) {
-					Flash::set( $this->user->getErrorString() , 'danger');
+					Flash::set($this->user->getErrorString() , 'danger');
 					return request()->return();
 				}else{
-					Flash::set( "Welcome Back !" . auth('first_name'));
+					Flash::set("Welcome Back !" . auth('first_name'));
 				}
 				return redirect('DashboardController');
 			}

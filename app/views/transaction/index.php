@@ -2,6 +2,7 @@
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">Containers</h4>
+            <?php Flash::show()?>
         </div>
         
         <div class="card-body">

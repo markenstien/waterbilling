@@ -1,5 +1,12 @@
 <?php
-    
+    function authRequired() {
+        if(!auth()) {
+            Flash::set("You must logged in to access this page");
+            return redirect(_route('auth:login'));
+        }
+        return true;
+    }
+
     function __($data)
     {
         if( is_array($data) )

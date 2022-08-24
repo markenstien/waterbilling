@@ -6,24 +6,26 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h4>Customer Details</h4>
-                        <table class="table table-bordered">
-                            <tr>
-                                <td>Name : </td>
-                                <td><?php echo $customer->full_name?></td>
-                            </tr>
-                            <tr>
-                                <td>Balance : </td>
-                                <td><?php echo $balance?></td>
-                            </tr>
-                            <tr>
-                                <td>Address : </td>
-                                <td><?php echo $customer->full_address?></td>
-                            </tr>
-                            <tr>
-                                <td>Water Station : </td>
-                                <td><?php echo wLinkDefault(_route('platform:show', $customer->platform_id), $customer->platform_name)?></td>
-                            </tr>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td>Name : </td>
+                                    <td><?php echo $customer->full_name?></td>
+                                </tr>
+                                <tr>
+                                    <td>Balance : </td>
+                                    <td><?php echo $balance?></td>
+                                </tr>
+                                <tr>
+                                    <td>Address : </td>
+                                    <td><?php echo $customer->full_address?></td>
+                                </tr>
+                                <tr>
+                                    <td>Water Station : </td>
+                                    <td><?php echo wLinkDefault(_route('platform:show', $customer->platform_id), $customer->platform_name)?></td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <h4>Containers</h4>

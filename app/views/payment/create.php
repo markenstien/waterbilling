@@ -22,7 +22,7 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <?php echo Form::text('amount', $amountToPay, [
+                            <?php echo Form::text('amount', amountConvert($amountToPay, 'ADD'), [
                                 'class' => 'form-control text-center',
                                 'reqiured' => true
                             ])?>

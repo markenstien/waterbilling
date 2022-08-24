@@ -7,6 +7,11 @@
             $this->model = model('AddressSourceModel');
         }
 
+        public function index() {
+            $this->data['address_sources'] = $this->model->all(null,'type asc');
+            return $this->view('address_source/index', $this->data);
+        }
+
         public function createOrEdit() {
             $request = request()->inputs();
 
