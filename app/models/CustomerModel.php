@@ -16,7 +16,43 @@
                 ]
             ]);
 
-            return $customer ? $customer[0]: false;
+            $customer = $customer ? $customer[0]: false;
+
+            if($customer) {
+                $addressModel = model('AddressModel');
+                $customerMeta = model('CustomerMetaModel');
+                $customer->address = $addressModel->get($customer->address_id);
+                $customer->meta = $customerMeta->getMeta($id);
+            }
+            return $customer;
+        }
+
+        /**
+         * Disable customer row
+         * Disable containers
+         */
+        public function deleteCustomer($id) {
+            $customer = parent::get($id);
+            
+            if($customer) {
+                $containerModel = model('ContainerModel');
+                $isUpdated = parent::update([
+                    'is_active' => false
+                ], $id);
+
+                $containerModel->update([
+                    'is_active' => false
+                ], [
+                    'customer_id' => $id
+                ]);
+
+                if($isUpdated) {
+                    $this->addMessage("CUSTOMER REMOVED!");
+                }
+            }else{
+                $this->addError("Custoemr not found!");
+            }
+            return $customer;
         }
 
         public function getList($params = null) {

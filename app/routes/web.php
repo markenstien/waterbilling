@@ -11,6 +11,8 @@
 		'show'   => $controller.'/show',
 		'createCustomer' => $controller.'/createCustomer',
 		'showCustomer' => $controller.'/showCustomer',
+		'deleteCustomer' => $controller.'/deleteCustomer',
+		'editCustomer' => $controller.'/editCustomer',
 		'customers' => $controller.'/customers',
 		'sendCredential' => $controller.'/sendCredential'
 	];

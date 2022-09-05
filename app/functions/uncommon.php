@@ -346,6 +346,14 @@
         return is_null($key) ? $auth : $auth->$key;
     }
 
+    function authPropCheck($matchTo, $prop = 'access_type') {
+        $auth = auth();
+        if(isEqual($auth->$prop, $matchTo)) {
+            return true;
+        }
+        return false;
+    }
+
     function amountConvert($amount, $type = 'ADD') {
         if($type == 'ADD' && $amount >= 0)
             return $amount;

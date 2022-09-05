@@ -17,6 +17,10 @@
                                     <td><?php echo $balance?></td>
                                 </tr>
                                 <tr>
+                                    <td>Points : </td>
+                                    <td><?php echo $customer->meta->points?></td>
+                                </tr>
+                                <tr>
                                     <td>Address : </td>
                                     <td><?php echo $customer->full_address?></td>
                                 </tr>

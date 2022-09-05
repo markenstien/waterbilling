@@ -6,6 +6,7 @@ use function PHPSTORM_META\map;
     {
         public $table = 'payments';
         public $_fillables = [
+            'customer_id',
             'parent_id',
             'parent_key',
             'amount',
@@ -41,6 +42,18 @@ use function PHPSTORM_META\map;
         }
 
         public function generateRefence() {
-            return number_series(random_number(7));
+            return parent::referenceSeries(date('Y-M-'));
+        }
+
+        public function validateReferenceAndNumber($reference, $number) {
+            if(strlen($reference) < 5) {
+                $this->addError("Please input complete reference or the last 5 digit number");
+            }
+
+            if(strlen($number) < 4) {
+                $this->addError("Please input complete Mobile Number or the last 5 digit number");
+            }
+
+            return empty(parent::getErrors()) ? true : false;
         }
     }

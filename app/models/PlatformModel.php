@@ -22,7 +22,8 @@
 
             $customers = $this->customerModel->getList([
                 'where' => [
-                    'cx.parent_id' => $parentId
+                    'cx.parent_id' => $parentId,
+                    'cx.is_active' => true
                 ]
             ]);
 

@@ -427,6 +427,7 @@
 			$res = $this->update($_fillables, $id);
 			$res ? $this->addMessage(self::MESSAGE_UPDATE_SUCCESS):$this->addMessage(self::MESSAGE_UPDATE_ERROR);
 			//update
+			return $id;
 		} else{
 			if(isset($platformData['_token'])) {
 				$_fillables[$platformData['_token']] = $this->referenceSeries();

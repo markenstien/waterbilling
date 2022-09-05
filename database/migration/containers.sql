@@ -6,3 +6,6 @@ create table containers(
     customer_id int(10),
     created_at timestamp default now()
 );
+
+
+alter table containers add column is_active boolean default true;

@@ -17,7 +17,11 @@ License: For each use you must have a valid license purchased only from above li
     <meta name="author" content="NobleUI">
     <meta name="keywords" content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
 
-    <title><?php echo $page_title ?? COMPANY_NAME?></title>
+    <title><?php
+
+  use Services\UserService;
+  load(['UserService'], SERVICES);
+ echo $page_title ?? COMPANY_NAME?></title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,15 +50,26 @@ License: For each use you must have a valid license purchased only from above li
 </head>
 <body>
     <?php $auth = auth()?>
+    <?php
+        $isVendorManagement = authPropCheck(UserService::ACCESS_VENDOR_MANAGEMENT);
+        $isPlatformManagement = authPropCheck(UserService::ACCESS_PLATFORM_MANAGEMENT);
+        $isPlatformStaff = authPropCheck(UserService::ACCESS_PLATFORM_STAFF);
+        ?>
     <div class="main-wrapper">
         <!-- partial:../../partials/_navbar.html -->
         <div class="horizontal-menu">
             <nav class="navbar top-navbar">
                 <div class="container">
                     <div class="navbar-content">
+                        <?php if(!$isVendorManagement) :?>
+                          <a href="#" class="navbar-brand">
+                              <?php echo whoIs('parent_name')?>
+                            </a>
+                        <?php else:?>
                         <a href="#" class="navbar-brand">
                             <?php echo COMPANY_NAME?>
                         </a>
+                        <?php endif?>
                         <?php if($auth) :?>
                             <?php $notifications = _notify_pull_items($auth->id)?>
                             <form class="search-form">
@@ -154,31 +169,43 @@ License: For each use you must have a valid license purchased only from above li
                                     <span class="menu-title">Transaction</span>
                                 </a>
                             </li>
+                            <?php if($isVendorManagement) :?>
                             <li class="nav-item">
                                 <a class="nav-link" href="<?php echo _route('platform:index')?>">
                                     <i class="link-icon" data-feather="box"></i>
-                                    <span class="menu-title">Platforms</span>
+                                    <span class="menu-title">Stations</span>
                                 </a>
                             </li>
+                            <?php endif?>
+
+                            <?php if($isPlatformManagement || $isVendorManagement) :?>
                             <li class="nav-item">
                                 <a class="nav-link" href="<?php echo _route('user:index')?>">
                                     <i class="link-icon" data-feather="box"></i>
                                     <span class="menu-title">Users</span>
                                 </a>
                             </li>
+                            <?php endif?>
+
+                            <?php if($isPlatformManagement || $isVendorManagement || $isPlatformStaff) :?>
                             <li class="nav-item">
                                 <a class="nav-link" href="<?php echo _route('user:customers')?>">
                                     <i class="link-icon" data-feather="box"></i>
                                     <span class="menu-title">Customers</span>
                                 </a>
                             </li>
+                            <?php endif?>
+
+                            <?php if($isPlatformManagement || $isVendorManagement) :?>
                             <li class="nav-item">
                                 <a class="nav-link" href="<?php echo _route('container:index')?>">
                                     <i class="link-icon" data-feather="box"></i>
                                     <span class="menu-title">Containers</span>
                                 </a>
                             </li>
+                            <?php endif?>
 
+                            <?php if($isPlatformManagement || $isVendorManagement) :?>
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="link-icon" data-feather="mail"></i>
@@ -192,6 +219,7 @@ License: For each use you must have a valid license purchased only from above li
                                     </ul>
                                 </div>
                             </li>
+                            <?php endif?>
 
                             <?php if(isEqual($auth->user_type, ['admin'])) :?>
                             <li class="nav-item">

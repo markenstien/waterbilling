@@ -8,6 +8,7 @@ create table payments(
     amount decimal(10,2),
     payment_method varchar(25),
     payment_reference varchar(25),
+    payer_account varchar(25),
     approval_status enum('pending','approved','declined'),
     approval_date datetime default null ON UPDATE now(),
     approval_by int(10) default null,

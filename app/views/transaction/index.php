@@ -1,7 +1,7 @@
 <?php build('content') ?>
     <div class="card">
         <div class="card-header">
-            <h4 class="card-title">Containers</h4>
+            <h4 class="card-title">Transaction</h4>
             <?php Flash::show()?>
         </div>
         

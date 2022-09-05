@@ -17,7 +17,10 @@
 						<td>Last Name:</td>
 						<td><?php echo $user->lastname?></td>
 					</tr>
-
+					<tr>
+						<td>Username:</td>
+						<td><?php echo $user->username?></td>
+					</tr>
 					<tr>
 						<td>User Type:</td>
 						<td><?php echo $user->user_type?>@<?php echo $user->access_type?></td>

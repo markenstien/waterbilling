@@ -8,3 +8,5 @@ create table customers(
     created_at timestamp default now(),
     updated_at timestamp default now() ON UPDATE now()
 );
+
+alter table customers add column is_active boolean default true;

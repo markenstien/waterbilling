@@ -29,6 +29,36 @@
             return $this->view('platform/create', $this->data);
         }
 
+        public function edit($id) {
+
+            $request = request()->inputs();
+
+            if (isSubmitted()) {
+                $res = $this->model->createOrUpdate($request, $request['id']);
+
+                if ($res) {
+                    Flash::set($this->model->getMessageString());
+                } else {
+                    Flash::set($this->model->getErrorString());
+                }
+                return redirect(_route('platform:show', $id));
+            }
+            $platform = $this->model->get($id);
+
+            $this->data['platformForm']->setValueObject($platform);
+            $this->data['platformForm']->add([
+                'type' => 'hidden',
+                'name' => 'id',
+                'value' => $id
+            ]);
+
+            $this->data['platformForm']->init([
+                'url' => _route('platform:edit', $id)
+            ]);
+
+            return $this->view('platform/edit', $this->data);
+        }
+
         public function show($id) {
             $platform = $this->model->get($id);
             $this->data['platform'] = $platform;

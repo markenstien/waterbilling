@@ -40,16 +40,19 @@
 			$fillable_datas = $this->getFillablesOnly($user_data);
 			$validated = $this->validate($fillable_datas, $id);
 
+			//change password also
+			if(empty($fillable_datas['password']))
+				unset($fillable_datas['password']);
+
 			if(!is_null($id))
 			{
-				//change password also
-				if(empty($fillable_datas['password']))
-					unset($fillable_datas['password']);
 				$res = parent::update($fillable_datas , $id);
 				if(isset($user_data['profile'])){
 					$this->uploadProfile('profile' , $id);
 				}
 				$user_id = $id;
+			}else{
+				$user_id = parent::store($fillable_datas);
 			}
 			
 			return $user_id;
@@ -82,17 +85,17 @@
 
 		private function validate($user_data , $id = null)
 		{
-			if(isset($user_data['email']))
+			if(isset($user_data['email']) && !empty($user_data['email']))
 			{
 				$is_exist = $this->getByKey('email' , $user_data['email'])[0] ?? '';
 
-				if( $is_exist && !isEqual($is_exist->id , $id) ){
+				if($is_exist && !isEqual($is_exist->id , $id)){
 					$this->addError("Email {$user_data['email']} already used");
 					return false;
 				}
 			}
 
-			if(isset($user_data['username']))
+			if(isset($user_data['username']) && !empty($user_data['username']))
 			{
 				$is_exist = $this->getByKey('username' , $user_data['username'])[0] ?? '';
 
@@ -102,7 +105,7 @@
 				}
 			}
 
-			if(isset($user_data['phone_number']))
+			if(isset($user_data['phone_number']) && !empty($user_data['phone_number']))
 			{
 				$is_exist = $this->getByKey('phone_number' , $user_data['phone_number'])[0] ?? '';
 
@@ -256,7 +259,15 @@
 		*/
 		public function startAuth($id)
 		{
-			$user = parent::get($id);
+			$this->db->query(
+				"SELECT user.*, platform.platform_name as parent_name
+					FROM {$this->table} as user 
+					LEFT JOIN platforms as platform
+					ON platform.id = user.parent_id
+					WHERE user.id = '{$id}'"
+			);
+
+			$user = $this->db->single();
 
 			if(!$user){
 				$this->addError("Auth cannot be started!");
@@ -265,7 +276,7 @@
 
 			$auth = null;
 
-			while( is_null($auth) )
+			while(is_null($auth) )
 			{
 				Session::set('auth' , $user);
 				$auth = Session::get('auth');

@@ -408,6 +408,10 @@
 			return $this->get('id');
 		}
 
+		public function getItems() {
+			return $this->_items;
+		}
+
 
 		public function getFormItems( $inputType = 'row' )
 		{

@@ -4,11 +4,22 @@
 
         public function __construct()
         {
+            parent::__construct();
             $this->model = model('ContainerModel');
         }
 
         public function index() {
-            $this->data['containers'] = $this->model->getList();
+            if(!authPropCheck($this->_userService::ACCESS_VENDOR_MANAGEMENT)) {
+                $this->data['containers'] = $this->model->getList([
+                    'where' => [
+                        'platform_id' => $this->data['whoIs']->parent_id
+                    ]
+                ]);
+			}else{
+                $this->data['containers'] = $this->model->getList();
+            }
+
+            
             return $this->view('container/index', $this->data);
         }
 

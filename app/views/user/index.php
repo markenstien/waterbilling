@@ -4,6 +4,7 @@
 		<div class="card-header">
 			<h4 class="card-title">Users</h4>
 			<?php echo wLinkDefault(_route('user:create'), 'Create')?>
+			<?php Flash::show()?>
 		</div>
 
 		<div class="card-body">

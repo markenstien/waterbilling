@@ -21,7 +21,7 @@
                                 <td><?php echo $row->platform_name?></td>
                                 <td><?php echo $row->contact_number?></td>
                                 <td>
-                                    <a href="#">Edit</a>
+                                    <a href="<?php echo _route('platform:edit', $row->id)?>">Edit</a>
                                     <a href="<?php echo _route('platform:show', $row->id)?>">Show</a>
                                 </td>
                             </tr>

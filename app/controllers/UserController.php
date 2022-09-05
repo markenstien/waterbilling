@@ -4,8 +4,9 @@
 	use Form\AddressForm;
 	use Form\ContainerForm;
 	use Form\UserForm;
+use Services\UserService;
 
-	class UserController extends Controller
+class UserController extends Controller
 	{
 
 		public function __construct()
@@ -24,34 +25,93 @@
 		public function createCustomer(){
 			$request = request()->inputs();
 			if(isSubmitted()) {
-				// dd($request); 
 				$addressId = $this->addressModel->createOrUpdate($request['address']);
 				if($addressId) {
 					$request['address_id'] = $addressId;
 					$customerId = $this->customerModel->createOrUpdate($request);
-
-					return redirect(_route('user:showCustomer', $customerId));
+					if($customerId) {
+						Flash::set($this->customerModel->getMessageString());
+					}else{
+						Flash::set($this->customerModel->getErrorString(), 'danger');
+					}
+					return redirect(_route('platform:show', $request['parent_id']));
 				}else{
 					Flash::set($this->addressModel->getErrorString(), 'danger');
 					return request()->return();
 				}
 			}
 
-			$this->data['platforms'] = $this->platformModel->all(null,'platform_name asc');
+			$this->data['isVendor'] = authPropCheck($this->_userService::ACCESS_VENDOR_MANAGEMENT);
+			if(!$this->data['isVendor']) {
+				$platforms = $this->platformModel->all(['id' => $this->data['whoIs']->parent_id]);
+				$this->data['platformId'] = $this->data['whoIs']->parent_id;
+			} else {
+				$platforms = $this->platformModel->all(null,'platform_name asc');
+			}
+			$this->data['platforms'] = $platforms;
 			return $this->view('user/create_customer',$this->data);
 		}
 
 
 		public function customers() {
-			$this->data['customers'] = $this->customerModel->getList();
+			if(!authPropCheck($this->_userService::ACCESS_VENDOR_MANAGEMENT)) {
+				$this->data['customers'] = $this->customerModel->getList([
+					'where' => [
+						'cx.parent_id' => $this->data['whoIs']->parent_id
+					]
+				]);
+			}else{
+				$this->data['customers'] = $this->customerModel->getList();
+			}
 			return $this->view('user/customers', $this->data);
-			// return $th
 		}
 
+		public function editCustomer($id) {
+			$request = request()->inputs();
+
+			if (isSubmitted()) {
+				$addressId = $this->addressModel->createOrUpdate($request['address'], $request['address']['id']);
+				$request['address_id'] = $addressId;
+				$customerId = $this->customerModel->createOrUpdate($request, $request['customer_id']);
+
+				if($customerId) {
+					Flash::set($this->customerModel->getMessageString());
+				}else{
+					Flash::set($this->customerModel->getErrorString());
+				}
+
+				return redirect(_route('user:editCustomer', $id));
+			}
+
+			$customer = $this->customerModel->get($id);
+			$this->data['platforms'] = $this->platformModel->all(null,'platform_name asc');
+			$this->data['form']->setValueObject($customer);
+			$this->data['form']->init([
+				'url' => _route('user:editCustomer', $id)
+			]);
+
+			$this->data['address']->setValue('address[street_id]',$customer->address->street_id);
+			$this->data['address']->setValue('address[barangay]',$customer->address->barangay);
+			$this->data['address']->setValue('address[house_number]',$customer->address->house_number);
+			$this->data['address']->setValue('address[city]',$customer->address->city);
+			$this->data['address']->add([
+				'name' => 'address[id]',
+				'value' => $customer->address->id,
+				'type' => 'hidden'
+			]);
+			$this->data['customer'] = $customer;
+			$this->data['form']->add([
+				'name' => 'customer_id',
+				'value' => $id,
+				'type' => 'hidden'
+			]);
+
+			return $this->view('user/edit_customer',$this->data);
+		}
 
 		public function showCustomer($customerId) {
 			$customer = $this->customerModel->get($customerId);
-
+			
 			$this->data['customer'] = $customer;
 			$this->data['customerId'] = $customerId;
 			$this->data['containerForm']->addRouteTo(
@@ -67,6 +127,10 @@
 		public function index()
 		{
 			$params = request()->inputs();
+
+			if(!authPropCheck($this->_userService::ACCESS_VENDOR_MANAGEMENT)) {
+				$params['parent_id'] = $this->data['whoIs']->parent_id;
+			}
 
 			if(!empty($params))
 			{
@@ -87,20 +151,19 @@
 				$post = request()->posts();
 				$user_id = $this->model->create($post , 'profile');
 				if(!$user_id){
-					Flash::set( $this->model->getErrorString() , 'danger');
+					Flash::set($this->model->getErrorString() , 'danger');
 					return request()->return();
 				}
-
 				Flash::set('User Record Created');
-				if( isEqual($post['user_type'] , 'patient') )
-				{
-					Flash::set('Patient Record Created');
-					return redirect(_route('patient-record:create' , null , ['user_id' => $user_id]));
-				}
-
 				return redirect( _route('user:show' , $user_id , ['user_id' => $user_id]) );
 			}
 			$this->data['user_form'] = new UserForm('userForm');
+
+			$this->data['isVendor'] = authPropCheck($this->_userService::ACCESS_VENDOR_MANAGEMENT);
+			if(!$this->data['isVendor']) {
+				$this->data['user_form']->setOptionValues('parent_id', arr_layout_keypair($this->platformModel->all(['id' => $this->data['whoIs']->parent_id]), ['id','platform_name']));
+				$this->data['user_form']->setValue('parent_id', $this->data['whoIs']->parent_id);
+			}
 
 			return $this->view('user/create' , $this->data);
 		}
@@ -163,6 +226,16 @@
 		{
 			$this->model->sendCredential($id);
 			Flash::set("Credentials has been set to the user");
+			return request()->return();
+		}
+
+		public function deleteCustomer($id) {
+			$res = $this->customerModel->deleteCustomer($id);
+			if ($res) {
+				Flash::set($this->customerModel->getMessageString());
+			} else {
+				Flash::set($this->customerModel->getErrorString());
+			}
 			return request()->return();
 		}
 	}
