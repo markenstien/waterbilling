@@ -13,8 +13,9 @@ class UserController extends Controller
 		{
 			parent::__construct();
 			$this->data['form'] = new CustomerForm();
-			$this->data['address'] = new AddressForm();
 			$this->data['containerForm'] = new ContainerForm();
+			$this->data['user_form'] = new UserForm();
+			
 			$this->model = model('UserModel');
 			$this->transaction = model('TransactionModel');
 			$this->customerModel = model('CustomerModel');
