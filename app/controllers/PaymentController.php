@@ -103,7 +103,7 @@
             return $this->view('payment/create', $this->data);
         }
         public function index() {
-            $this->data['payments'] = $this->model->all(['is_removed' => false, 'id desc']);
+            $this->data['payments'] = $this->model->all();
             return $this->view('payment/index', $this->data);
         }
 

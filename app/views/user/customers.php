@@ -20,7 +20,7 @@
                                 <td><?php echo $row->full_address?></td>
                                 <td>
                                     <a href="<?php echo _route('user:showCustomer', $row->customer_id)?>">Show</a> | 
-                                    <a href="#">Edit</a>
+                                    <a href="<?php echo _route('user:editCustomer', $row->customer_id)?>">Edit</a>
                                 </td>
                             </tr>
                         <?php endforeach?>

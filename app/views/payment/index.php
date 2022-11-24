@@ -25,23 +25,9 @@
                                 <td><?php echo $row->amount?></td>
                                 <td><?php echo $row->payment_method?></td>
                                 <td><?php echo $row->created_at?></td>
-                                <td><?php echo $row->external_reference?></td>
+                                <td><?php echo $row->payment_reference ?? 'N/A'?></td>
                                 <td>
-                                    <?php 
-                                        $anchor_items = [
-                                            [
-                                                'url' => _route('receipt:order' , $row->order_id),
-                                                'text' => 'Order',
-                                                'icon' => 'eye'
-                                            ],
-
-                                            [
-                                                'url' => _route('payment:show', $row->id),
-                                                'text' => 'Show Payment',
-                                                'icon' => 'eye'
-                                            ]
-                                        ];
-                                    echo anchorList($anchor_items)?>
+                                    <?php echo wLinkDefault(_route('payment:show', $row->id), 'Show Payment')?>
                                 </td>
                             </tr>
                         <?php endforeach?>

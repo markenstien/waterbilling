@@ -27,6 +27,10 @@
 					</tr>
 				</table>
 			</div>
+			
+			<a href="<?php echo _route('user:delete', $user->id, [
+				'route' => seal(_route('user:index'))
+			])?>" class="btn btn-danger form-verify"> Delete user </a>
 		</div>
 	</div>
 <?php endbuild()?>

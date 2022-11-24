@@ -4,7 +4,7 @@
 	use Form\AddressForm;
 	use Form\ContainerForm;
 	use Form\UserForm;
-use Services\UserService;
+	use Services\UserService;
 
 class UserController extends Controller
 	{
@@ -15,6 +15,7 @@ class UserController extends Controller
 			$this->data['form'] = new CustomerForm();
 			$this->data['containerForm'] = new ContainerForm();
 			$this->data['user_form'] = new UserForm();
+			$this->data['address'] = new AddressForm();
 			
 			$this->model = model('UserModel');
 			$this->transaction = model('TransactionModel');
