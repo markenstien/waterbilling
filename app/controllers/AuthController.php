@@ -20,7 +20,7 @@
 			if(isSubmitted())
 			{
 				$post = request()->posts();
-				$res = $this->user->authenticate($post['username'] , $post['password']);
+				$res = $this->user->authenticate($post['username'] , $post['password'], $post['type']);
 				if(!$res) {
 					Flash::set($this->user->getErrorString() , 'danger');
 					return request()->return();

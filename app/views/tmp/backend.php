@@ -125,13 +125,16 @@ License: For each use you must have a valid license purchased only from above li
                                       <img class="wd-80 ht-80 rounded-circle" src="https://via.placeholder.com/80x80" alt="">
                                     </div>
                                     <div class="text-center">
-                                      <p class="tx-16 fw-bolder"><?php echo $auth->firstname . ' '.$auth->lastname?></p>
+                                      <p class="tx-16 fw-bolder"><?php echo $auth->firstname . ' '?> <?php echo $auth->lastname ?? ''?></p>
                                       <p class="tx-12 text-muted"><?php echo $auth->user_type ?></p>
                                     </div>
                                   </div>
                                   <ul class="list-unstyled p-1">
                                     <li class="dropdown-item py-2">
-                                      <a href="<?php echo _route('user:edit' , $auth->id)?>" class="text-body ms-0">
+                                      <?php
+                                        $route = whoIs('user_type') == 'customer' ? _route('user:editCustomer', $auth->id) : _route('user:edit', $auth->id);
+                                      ?>
+                                      <a href="<?php echo $route?>" class="text-body ms-0">
                                         <i class="me-2 icon-md" data-feather="user"></i>
                                         <span>Profile</span>
                                       </a>
@@ -196,14 +199,12 @@ License: For each use you must have a valid license purchased only from above li
                             </li>
                             <?php endif?>
 
-                            <?php if($isPlatformManagement || $isVendorManagement) :?>
                             <li class="nav-item">
                                 <a class="nav-link" href="<?php echo _route('container:index')?>">
                                     <i class="link-icon" data-feather="box"></i>
                                     <span class="menu-title">Containers</span>
                                 </a>
                             </li>
-                            <?php endif?>
 
                             <?php if($isPlatformManagement || $isVendorManagement) :?>
                             <li class="nav-item">

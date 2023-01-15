@@ -23,7 +23,7 @@
 			$return = [];
 
 			foreach($datas as $key => $row) {
-				if( isEqual($key, $this->_fillables) )
+				if(isEqual($key, $this->_fillables) && !empty($row))
 					$return[$key] = $row;
 			}
 			return $return;

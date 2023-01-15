@@ -92,10 +92,40 @@ class UserController extends Controller
 				'url' => _route('user:editCustomer', $id)
 			]);
 
-			$this->data['address']->setValue('address[street_id]',$customer->address->street_id);
-			$this->data['address']->setValue('address[barangay]',$customer->address->barangay);
 			$this->data['address']->setValue('address[house_number]',$customer->address->house_number);
-			$this->data['address']->setValue('address[city]',$customer->address->city);
+			$this->data['form']->setValue('password', '');
+			if(!isEqual(whoIs('user_type'), 'customer')) {
+				$this->data['address']->setValue('address[street_id]',$customer->address->street_id);
+				$this->data['address']->setValue('address[barangay]',$customer->address->barangay);
+				$this->data['address']->setValue('address[city]',$customer->address->city);
+			} else {
+				$this->data['address']->add([
+					'type' => 'hidden',
+					'name' => 'address[street_id]',
+					'value' => $customer->address->street_id
+				]);
+
+				$this->data['address']->add([
+					'type' => 'hidden',
+					'name' => 'address[barangay]',
+					'value' => $customer->address->barangay
+				]);
+
+				$this->data['address']->add([
+					'type' => 'hidden',
+					'name' => 'address[city]',
+					'value' => $customer->address->city
+				]);
+			}
+
+			$this->data['form']->add([
+				'name' => 'password',
+				'type' => 'password',
+				'class' => 'form-control',
+				'options' => [
+					'label' => 'Password'
+				]
+			]);
 			$this->data['address']->add([
 				'name' => 'address[id]',
 				'value' => $customer->address->id,

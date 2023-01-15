@@ -109,33 +109,36 @@
 
 	function _notify_pull_items( $user_id )
 	{
-		$user_model = model('UserModel');
+		if(!isEqual(whoIs('user_type'),'customer')) {
+			$user_model = model('UserModel');
 
-		$user = $user_model->get($user_id);
+			$user = $user_model->get($user_id);
 
-		$db = Database::getInstance();
+			$db = Database::getInstance();
 
-		if( isEqual($user->user_type , ['patient' , 'doctor' , 'medical personel']) ){
+			if( isEqual($user->user_type , ['patient' , 'doctor' , 'medical personel']) ){
 
-			$db->query(
-				"SELECT * FROM system_notification_recipients as syr
-					LEFT JOIN system_notifications as sy 
-					ON sy.id  = syr.notification_id 
-					WHERE recipient_id = '{$user_id}'
-					ORDER BY sy.id desc
-					LIMIT 11"
-			);
+				$db->query(
+					"SELECT * FROM system_notification_recipients as syr
+						LEFT JOIN system_notifications as sy 
+						ON sy.id  = syr.notification_id 
+						WHERE recipient_id = '{$user_id}'
+						ORDER BY sy.id desc
+						LIMIT 11"
+				);
 
-			return $db->resultSet();
-		}else
-		{
-			$db->query(
-				"SELECT * FROM system_notifications
-					ORDER BY id desc LIMIT 11"
-			);
+				return $db->resultSet();
+			}else
+			{
+				$db->query(
+					"SELECT * FROM system_notifications
+						ORDER BY id desc LIMIT 11"
+				);
 
-			$items = $db->resultSet();
-			return $items;
+				$items = $db->resultSet();
+				return $items;
+			}
 		}
+		
 	}
 ?>

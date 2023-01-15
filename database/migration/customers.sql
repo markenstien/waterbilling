@@ -10,3 +10,7 @@ create table customers(
 );
 
 alter table customers add column is_active boolean default true;
+
+
+alter table customers add column username varchar(100),
+add column password varchar(250);

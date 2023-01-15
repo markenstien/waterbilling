@@ -6,9 +6,43 @@
         public $_fillables = [
             'full_name',
             'address_id',
-            'parent_id'
+            'parent_id',
+            'username',
+            'password'
         ];
         
+        public function createOrUpdate($platformData, $id = null)
+        {
+            $platformData = parent::getFillablesOnly($platformData);
+
+            if(isset($platformData['username'])) {
+                $userExist = parent::single([
+                    'username' => $platformData['username']
+                ]);
+
+                if($userExist) {
+                    if(!is_null($id)) {
+                        if($userExist->id != $id) {
+                            $this->addError("Username already exists");
+                            return false;
+                        }
+                    } else {
+                        $this->addError("Username alreadty exists");
+                        return false;
+                    }
+                }
+            }
+
+            if(!empty($platformData['password'])) {
+                parent::update([
+                    'password' => $platformData['password']
+                ], $id);
+            } else {
+            }
+
+            return parent::createOrUpdate($platformData,$id);
+        }
+
         public function get($id) {
             $customer = $this->getList([
                 'where' => [

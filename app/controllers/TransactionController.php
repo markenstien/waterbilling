@@ -21,11 +21,21 @@
         
         public function index() {
             if (!authPropCheck($this->_userService::ACCESS_VENDOR_MANAGEMENT)) {
-                $this->data['containers'] = $this->container->getList([
-                    'where' => [
-                        'platform_id' => $this->data['whoIs']->parent_id
-                    ]
-                ]);
+
+                if(authPropCheck('customer')) {
+                    $this->data['containers'] = $this->container->getList([
+                        'where' => [
+                            'customer_id' => $this->data['whoIs']->id
+                        ]
+                    ]);
+                } else {
+                    $this->data['containers'] = $this->container->getList([
+                        'where' => [
+                            'platform_id' => $this->data['whoIs']->parent_id
+                        ]
+                    ]);
+                }
+                
             } else {
                 $this->data['containers'] = $this->container->getList();
             }

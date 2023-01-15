@@ -232,26 +232,56 @@
 		}
 
 
-		public function authenticate($username , $password)
+		public function authenticate($username , $password, $userType = 'users')
 		{
-			$errors = [];
 
-			$user = parent::single(['username' => $username]);
+			if($userType == 'users') {
+				$errors = [];
+				$user = parent::single(['username' => $username]);
 
-			if(!$user) {
-				$errors[] = " Username '{$username}' does not exists in any account";
+				if(!$user) {
+					$errors[] = " Username '{$username}' does not exists in any account";
+				}
+
+				if(!isEqual($user->password ?? '' , $password)){
+					$errors[] = " Incorrect Password ";
+				}
+
+				if(!empty($errors)){
+					$this->addError( implode(',', $errors));
+					return false;
+				}
+
+				return $this->startAuth($user->id);
+			} else {
+				//customers
+				$db = Database::getInstance();
+				$db->query("SELECT * FROM customers where username = '{$username}' AND password = '{$password}'");
+				$user = $db->single();
+
+				if(!$user) {
+					$this->addError("No User found");
+					return false;
+				} else {
+					$customerData = new stdClass();
+					$customerData->id = $user->id;
+					$customerData->firstname = $user->firstname;
+					$customerData->username = $user->username;
+					$customerData->profile = 'https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o=';
+					$customerData->user_type = 'customer';
+					$customerData->access_type = 'customer';
+					$customerData->parent_id = $user->parent_id;
+
+					if(!isset($this->platformModel)) {
+						$this->platformModel = model('PlatformModel');
+					}
+					$customerData->parent_name = $this->platformModel->get($customerData->parent_id)->platform_name ?? COMPANY_NAME;
+					//fake session
+					Session::set('auth', $customerData);
+
+					return $customerData;
+				}
 			}
-
-			if(!isEqual($user->password ?? '' , $password)){
-				$errors[] = " Incorrect Password ";
-			}
-
-			if(!empty($errors)){
-				$this->addError( implode(',', $errors));
-				return false;
-			}
-
-			return $this->startAuth($user->id);
 		}
 
 		/*

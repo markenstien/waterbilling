@@ -19,6 +19,17 @@
               <div class="mb-3">
                 <?php __( $form->getCol('password') ); ?>
               </div>
+
+              <div class="mb-3">
+                <?php
+                  Form::label('User Type');
+                  Form::select('type', ['users' => 'Vendor','customer' => 'Customer'],'',[
+                    'class' => 'form-control',
+                    'required' => true
+                  ])
+                ?>
+              </div>
+
               <div>
                 <?php __($form->get('submit')) ?>
               </div>

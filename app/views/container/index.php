@@ -5,6 +5,9 @@
         </div>
 
         <div class="card-body">
+            <?php if(empty($containers)) :?>
+                <p class="text-center">There are no containers available.</p>
+            <?php else:?>
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>
@@ -26,6 +29,7 @@
                     </tbody>
                 </table>
             </div>
+            <?php endif?>
         </div>
     </div>
 <?php endbuild()?>

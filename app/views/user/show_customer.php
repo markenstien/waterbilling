@@ -24,20 +24,24 @@
                                     <td>Address : </td>
                                     <td><?php echo $customer->full_address?></td>
                                 </tr>
+                                <?php if(!isEqual(whoIs('user_type'), 'customer')) :?>
                                 <tr>
                                     <td>Water Station : </td>
                                     <td><?php echo wLinkDefault(_route('platform:show', $customer->platform_id), $customer->platform_name)?></td>
                                 </tr>
+                                <?php endif?>
                             </table>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <h4>Containers</h4>
-                        <?php echo $containerForm->getForm()?>
-                    </div>
+                    <?php if(!isEqual(whoIs('user_type'), 'customer')) :?>
+                        <div class="col-md-6">
+                            <h4>Containers</h4>
+                            <?php echo $containerForm->getForm()?>
+                        </div>
+                    <?php endif?>
                 </div>
             </section>
-
+            
             <section>
                 <h4>Containers</h4>
                 <table class="table table-bordered">
