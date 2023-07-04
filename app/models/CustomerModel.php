@@ -8,7 +8,8 @@
             'address_id',
             'parent_id',
             'username',
-            'password'
+            'password',
+            'phone_number'
         ];
         
         public function createOrUpdate($platformData, $id = null)
@@ -67,7 +68,6 @@
          */
         public function deleteCustomer($id) {
             $customer = parent::get($id);
-            
             if($customer) {
                 $containerModel = model('ContainerModel');
                 $isUpdated = parent::update([
@@ -94,20 +94,23 @@
             $order = null;
             $limit = null;
 
-            if(isset($params['where'])) {
+            if(!empty($params['where'])) {
                 $where = " WHERE ".parent::conditionConvert($params['where']);
             }
-            if(isset($params['order'])) {
+            if(!empty($params['order'])) {
                 $order = " ORDER BY ".$params['order'];
             }
-            if(isset($params['limit'])) {
+            if(!empty($params['limit'])) {
                 $limit = " LIMIT {$params['limit']}";
             }
 
             $this->db->query(
                 "SELECT adrs.*, cx.*, cx.id as customer_id,
                     concat(adrs.house_number, ' ',  '(' , sc.abbr , ')', adrs.street, ', Brgy. ', adrs.barangay, ' ',adrs.city,'.') as full_address, 
-                    sc.abbr as adrs_str_abbr, pl.platform_name as platform_name, pl.id as platform_id
+                    sc.abbr as adrs_str_abbr, pl.platform_name as platform_name, pl.id as platform_id,
+
+                    ifnull(vub.balance,0) as balance,
+                    ifnull(cm.points,0) as points
 
                     FROM {$this->table} as cx 
                     LEFT JOIN address as adrs
@@ -118,6 +121,12 @@
 
                     LEFT JOIN address_source as sc
                     ON sc.id = adrs.street_id
+
+                    LEFT JOIN v_user_balance as vub
+                    on vub.customer_id = cx.id 
+
+                    LEFT JOIN customer_meta as cm
+                    on cm.customer_id = cx.id
                     
                     {$where} {$order} {$limit}"
             );

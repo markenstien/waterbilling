@@ -220,9 +220,7 @@ License: For each use you must have a valid license purchased only from above li
                                     </ul>
                                 </div>
                             </li>
-                            <?php endif?>
 
-                            <?php if(isEqual($auth->user_type, ['admin'])) :?>
                             <li class="nav-item">
                                 <a href="/ReportController/create" class="nav-link">
                                     <i class="link-icon" data-feather="hash"></i>
@@ -252,10 +250,10 @@ License: For each use you must have a valid license purchased only from above li
     <script src="<?php echo _path_tmp('assets/vendors/core/core.js')?>"></script>
     <script src="<?php echo _path_public('js/core.js')?>"></script>
     <script src="<?php echo _path_public('js/global.js')?>"></script>
-    <?php produce('scripts')?>
     <!-- endinject -->
 
     <!-- Plugin js for this page -->
+    <script src="<?php echo _path_tmp('assets/vendors/chartjs/Chart.min.js')?>"></script>
     <!-- End plugin js for this page -->
 
     <!-- inject:js -->
@@ -296,6 +294,7 @@ License: For each use you must have a valid license purchased only from above li
 
         });
     </script>
+    <?php produce('scripts')?>
     <!-- Custom js for this page -->
   <!-- End custom js for this page -->
 </body>

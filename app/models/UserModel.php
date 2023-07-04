@@ -21,8 +21,7 @@
 			'created_at',
 			'created_by',
 			'user_type',
-			'access_type',
-			'profile'
+			'access_type'
 		];
 
 
@@ -196,11 +195,17 @@
 			if(isset($params['where']))
 				$where = " WHERE ".$this->conditionConvert($params['where']);
 
+			/*
+			*views
+			*/
 			$this->db->query(
 				"SELECT user.* , platform_name
+
 					FROM {$this->table} as user
+
 					LEFT JOIN platforms as pl
 					ON user.parent_id = pl.id
+					
 					{$where} {$order}"
 			);
 

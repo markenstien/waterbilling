@@ -28,7 +28,7 @@
                 'options' => [
                     'label' => 'Container Label',
                 ],
-                'is_required' => true
+                'required' => true
             ]);    
         }
 
@@ -43,7 +43,7 @@
                         ContainerService::JAG,
                     ]
                 ],
-                'is_required' => true
+                'required' => true
             ]); 
         }
 

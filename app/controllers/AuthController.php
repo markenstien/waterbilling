@@ -12,7 +12,11 @@
 
 		public function index()
 		{
-			return $this->login();
+			if(!whoIs()) {
+				return $this->login();
+			} else {
+				return redirect(_route('dashboard:index'));
+			}
 		}
 
 		public function login()

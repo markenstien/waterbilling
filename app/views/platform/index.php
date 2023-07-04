@@ -5,6 +5,7 @@
             <?php echo wLinkDefault(_route('platform:create'), 'Create')?>
         </div>
         <div class="card-body">
+            <?php Flash::show()?>
             <div class="table-responsive">
                 <table class="table table-bordered dataTable">
                     <thead>

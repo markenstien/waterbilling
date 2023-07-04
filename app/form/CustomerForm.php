@@ -10,6 +10,7 @@
             parent::__construct();
             $this->addName();
             $this->addUsername();
+            $this->addPhoneNumber();
             $this->addPassword();
         }
         public function addName(){
@@ -45,6 +46,25 @@
                     'label' => 'Password'
                 ],
                 'class' => 'form-control',
+                'required' => true
+            ]);
+        }
+
+        public function addPhoneNumber()
+        {
+            $this->add([
+                'type' => 'text',
+                'name' => 'phone_number',
+                'class' => 'form-control',
+                'options' => [
+                    'label' => 'Phone Number',
+                ],
+
+                'attributes' => [
+                    'id' => 'phone',
+                    'placeholder' => 'Eg. 09xxxxxxxxx'
+                ],
+
                 'required' => true
             ]);
         }

@@ -13,6 +13,7 @@
                         <th>Type</th>
                         <th>Value</th>
                         <th>ABBR</th>
+                        <th>Action</th>
                     </thead>
 
                     <tbody>
@@ -22,6 +23,7 @@
                                 <td><?php echo $row->type?></td>
                                 <td><?php echo $row->value?></td>
                                 <td><?php echo $row->abbr?></td>
+                                <td><?php echo wLinkDefault(_route('adrs-src:delete', $row->id), 'Delete')?></td>
                             </tr>
                         <?php endforeach?>
                     </tbody>

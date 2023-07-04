@@ -22,7 +22,7 @@
         public function getMeta($userId) {
             $meta = parent::single([
                 'customer_id' => $userId
-            ]);
+            ],'*','id desc');
 
             if(!$meta) {
                 parent::store([
@@ -33,7 +33,7 @@
 
                 $meta = parent::single([
                     'customer_id' => $userId
-                ]);
+                ],'*','id desc');
             }
 
             return $meta;

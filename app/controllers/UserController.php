@@ -56,14 +56,40 @@ class UserController extends Controller
 
 
 		public function customers() {
+			$req = request()->inputs();
+			$condition = [];
+
+			if(!empty($req['filter_option'])) {
+				$conditionBalance = isEqual($req['filter_option'],'with_balance');
+
+				if($conditionBalance) {
+					$condition['vub.balance'] = [
+						'condition' => '<',
+						'value' => 0
+					];
+				}else if(isEqual($req['filter_option'],'with_points')) {
+					$condition['cm.points'] = [
+						'condition' => '>',
+						'value' => 0
+					];
+				}
+			}
+
+			$condition['cx.is_active'] = [
+				'condition' => 'equal',
+				'value' => true
+			];
+
 			if(!authPropCheck($this->_userService::ACCESS_VENDOR_MANAGEMENT)) {
+				$condition['cx.parent_id'] = $this->data['whoIs']->parent_id;
 				$this->data['customers'] = $this->customerModel->getList([
-					'where' => [
-						'cx.parent_id' => $this->data['whoIs']->parent_id
-					]
+					'where' => $condition
 				]);
+
 			}else{
-				$this->data['customers'] = $this->customerModel->getList();
+				$this->data['customers'] = $this->customerModel->getList([
+					'where' => $condition
+				]);
 			}
 			return $this->view('user/customers', $this->data);
 		}

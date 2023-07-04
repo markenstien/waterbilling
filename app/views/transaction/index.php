@@ -16,7 +16,9 @@
                             <th>Label</th>
                             <th>Owner</th>
                             <th>Water Station</th>
-                            <th>Action</th>
+                            <?php if(!isEqual(whoIs('user_type'), 'customer')) :?>
+                                <th>Action</th>
+                            <?php endif?>
                         </thead>
 
                         <tbody>
@@ -28,16 +30,18 @@
                                         $row->full_name)?></td>
                                     <td><?php echo wLinkDefault(_route('platform:show', $row->platform_id), 
                                         $row->platform_name)?></td>
-                                    <td>
-                                        <a href="<?php echo _route('transaction:deliverOrPickup', null, [
-                                            'id' => $row->container_id,
-                                            'action' => $action['pick_up']
-                                        ])?>">Pickup</a> |
-                                        <a href="<?php echo _route('transaction:deliverOrPickup', null, [
-                                            'id' => $row->container_id,
-                                            'action' => $action['delivery']
-                                        ])?>">Deliver</a> 
-                                    </td>
+                                    <?php if(!isEqual(whoIs('user_type'), 'customer')) :?>
+                                        <td>
+                                            <a href="<?php echo _route('transaction:deliverOrPickup', null, [
+                                                'id' => $row->container_id,
+                                                'action' => $action['pick_up']
+                                            ])?>">Pickup</a> |
+                                            <a href="<?php echo _route('transaction:deliverOrPickup', null, [
+                                                'id' => $row->container_id,
+                                                'action' => $action['delivery']
+                                            ])?>">Deliver</a> 
+                                        </td>
+                                    <?php endif?>
                                 </tr>
                             <?php endforeach?>
                         </tbody>

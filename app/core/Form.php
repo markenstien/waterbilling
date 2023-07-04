@@ -43,9 +43,10 @@
 
 		}
 
-		public function start()
-		{
-			return $this->_form->open( $this->_form_param );
+		public function start($params = [])
+		{	
+			$params = empty($params) ? $this->_form_param : $params;
+			return $this->_form->open($params);
 		}
 
 		public function end()

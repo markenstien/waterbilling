@@ -260,13 +260,22 @@
     {
         $curl = curl_init();
 
+        if(is_array($data)) {
+            foreach($data as $dataKey => $dataValue) {
+                if(is_array($dataValue)) {
+                    foreach($dataValue as $dataValKey => $dataValRow) {
+                        $data[$dataKey][$dataValKey] = urlencode($dataValRow);
+                    }
+                }
+            }
+        }
+
         switch ($method)
         {
             case "POST":
-                curl_setopt($curl, CURLOPT_POST, 1);
-
+                curl_setopt($curl, CURLOPT_URL, 1);
                 if ($data)
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
                 break;
             case "PUT":
                 curl_setopt($curl, CURLOPT_PUT, 1);
@@ -275,15 +284,13 @@
                 if ($data)
                     $url = sprintf("%s?%s", $url, http_build_query($data));
         }
-
-
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
         $result = curl_exec($curl);
+        curl_close($curl);
 
         return $result;
-        curl_close($curl);
     }
     function base_url($args = '')
     {

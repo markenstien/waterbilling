@@ -7,12 +7,13 @@
 
         public function __construct()
         {
+            parent::__construct();
             $this->data['platformForm'] = new PlatformForm();
             $this->model = model('PlatformModel');
         }
 
         public function index() {
-            $platforms = $this->model->all(null, 'platform_name asc');
+            $platforms = $this->model->all(['is_active' => true], 'platform_name asc');
             $this->data['platforms'] = $platforms;
             return $this->view('platform/index', $this->data);
         }
@@ -56,6 +57,8 @@
                 'url' => _route('platform:edit', $id)
             ]);
 
+            $this->data['platform'] = $platform;
+
             return $this->view('platform/edit', $this->data);
         }
 
@@ -64,5 +67,15 @@
             $this->data['platform'] = $platform;
             $this->data['customers'] = $this->model->getCustomers($id);
             return $this->view('platform/show', $this->data);
+        }
+
+        public function destroy($id) {
+            $this->model->update([
+                'is_active' => false
+            ], $id);
+
+            Flash::set("Platform Removed");
+
+            return redirect(_route('platform:index'));
         }
     }

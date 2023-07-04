@@ -48,6 +48,7 @@
                     <thead>
                         <th>Label</th>
                         <th>Container Type</th>
+                        <th>Action</th>
                     </thead>
 
                     <tbody>
@@ -55,6 +56,9 @@
                             <tr>
                                 <td><?php echo $row->container_label?></td>
                                 <td><?php echo $row->container_type?></td>
+                                <td><?php echo wLinkDefault(_route('container:delete', $row->id, [
+                                    'route' => seal(_route('user:showCustomer', $customer->id))
+                                ]), 'Delete');?></td>
                             </tr>
                         <?php endforeach?>
                     </tbody>

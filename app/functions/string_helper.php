@@ -28,7 +28,7 @@
     {
         $mobile = preg_replace("/[^0-9]/", "", trim($string));
 
-        if( substr($mobile , 0 ,2) == '63' || substr($mobile , 0 , 1) == '9' ) {
+        if(substr($mobile , 0 ,2) == '63' || substr($mobile , 0 , 1) == '9' ) {
             $mobile = '09'.substr( $mobile , 0);
         }
         return $mobile;

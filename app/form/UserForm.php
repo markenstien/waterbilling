@@ -21,12 +21,13 @@
 			/*personal details*/
 			$this->addFirstName();
 			$this->addLastName();
+			$this->addPhoneNumber();
 			/*end*/
 			$this->addUsername();
 			$this->addPassword();
 			$this->addUserType();
 			$this->addAccessType();
-			$this->addProfile();
+			// $this->addProfile();
 			
 			$this->addSubmit('');
 		}
@@ -123,7 +124,8 @@
 				'attributes' => [
 					'id' => 'phone',
 					'placeholder' => 'Eg. 09xxxxxxxxx'
-				]
+				],
+				'required' => true
 			]);
 		}
 

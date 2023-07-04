@@ -26,8 +26,14 @@
 
         public function getList($params = []) {
             $where = null;
+            $order = null;
+            
             if(isset($params['where'])) {
                 $where = " WHERE ".parent::conditionConvert($params['where']);
+            }
+
+            if(!empty($params['order'])) {
+                $order = " ORDER BY {$params['order']}";
             }
             $this->db->query(
                 "SELECT container.id as container_id, container.container_label,
@@ -42,7 +48,7 @@
                     ON cx.id = container.customer_id
                     LEFT JOIN platforms as pl
                     ON pl.id = cx.parent_id
-                    {$where}"
+                    {$where} {$order}"
             );
             return $this->db->resultSet();
         }

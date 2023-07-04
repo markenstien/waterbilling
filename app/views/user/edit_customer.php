@@ -28,6 +28,10 @@
                     
             <?php echo $address->getFormItems()?>
 
+            <?php echo wDivider(30)?>
+            <?php echo wLinkDefault(_route('user:deleteCustomer', $customer->id), 'Delete', [
+                'class' => 'btn btn-danger form-verify'
+            ])?>
             <?php Form::close()?>
         </div>
     </div>

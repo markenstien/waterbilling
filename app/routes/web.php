@@ -230,5 +230,16 @@
 		'respond'   => '/FormController'.'/respond'
 	];
 
+
+	$controller = '/api/API_SMS_Light';
+	$routes['api-sms'] = [
+		'index' => $controller.'/index',
+		'edit' => $controller.'/edit',
+		'create' => $controller.'/create',
+		'delete' => $controller.'/destroy',
+		'show'   => $controller.'/show',
+		'send' => $controller. '/send',
+		'send-bulk' => $controller .'/sendBulk'
+	];
 	return $routes;
 ?>

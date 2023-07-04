@@ -26,13 +26,15 @@
                     $this->data['containers'] = $this->container->getList([
                         'where' => [
                             'customer_id' => $this->data['whoIs']->id
-                        ]
+                        ],
+                        'order' => 'cx.full_name asc'
                     ]);
                 } else {
                     $this->data['containers'] = $this->container->getList([
                         'where' => [
                             'platform_id' => $this->data['whoIs']->parent_id
-                        ]
+                        ],
+                        'order' => 'cx.full_name asc'
                     ]);
                 }
                 
