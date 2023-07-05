@@ -26,6 +26,9 @@
 					"Message"    => $payload['message'],
 					"ApiCode"    => self::API_CODE
 				]);
+
+				dump($response);
+				
 				Flash::set("Message sent");
 				return request()->return();
 			} else {

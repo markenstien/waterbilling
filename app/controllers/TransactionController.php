@@ -39,7 +39,9 @@
                 }
                 
             } else {
-                $this->data['containers'] = $this->container->getList();
+                $this->data['containers'] = $this->container->getList([
+                    'order' => 'cx.full_name asc'
+                ]);
             }
             $this->data['action'] = [
                 'delivery' => TransactionService::DELIVERY,
