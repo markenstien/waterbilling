@@ -20,8 +20,9 @@
 			return $this;
 		}	
 
-		public function setCustomers() {
-
+		public function setCustomers($customers) {
+			$this->_customers = $customers;
+			return $this;
 		}
 
 		public function generateSummary() 
@@ -85,11 +86,45 @@
 
 			arsort($profitByStations);
 			arsort($profitByBarangays);
+
+
+			//custoemrs
+			$customerByStations = [];
+			$customerByBarangays = [];
+
+			foreach($this->_customers as $key => $row) {
+				//platform
+				if(!isset($customerByStations[$row->platform_id])) {
+					$customerByStations[$row->platform_id] = [
+						'name' => $row->platform_name,
+						'platform_reference' => $row->platform_reference,
+						'customers' => []
+					];
+					$customerByStations[$row->platform_id]['customers'][] = $row;
+				} else {
+					$customerByStations[$row->platform_id]['customers'][] = $row;
+				}
+
+				//barangays
+				if(!isset($customerByBarangays[$row->cx_street])) {
+					$customerByBarangays[$row->cx_street]['platform_name'] = $row->platform_name;
+					$customerByBarangays[$row->cx_street]['street_name'] = $row->cx_street;
+					$customerByBarangays[$row->cx_street]['platform_reference'] = $row->platform_reference;
+					$customerByBarangays[$row->cx_street]['customers'] = [];
+					$customerByBarangays[$row->cx_street]['customers'][] = $row;
+				} else {
+					$customerByBarangays[$row->cx_street]['customers'][] = $row;
+				}
+			}
 			
 			return [
 				'profitReport' => [
 					'byStations' => $profitByStations,
 					'byBarangays' => $profitByBarangays
+				],
+				'customerReport' => [
+					'byStations' => $customerByStations,
+					'byBarangays' => $customerByBarangays
 				]
 			];
 		}

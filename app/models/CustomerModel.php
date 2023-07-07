@@ -105,9 +105,9 @@
             }
 
             $this->db->query(
-                "SELECT adrs.*, cx.*, cx.id as customer_id,
+                "SELECT adrs.*, cx.*, cx.id as customer_id,adrs.street as cx_street,
                     concat(adrs.house_number, ' ',  '(' , sc.abbr , ')', adrs.street, ', Brgy. ', adrs.barangay, ' ',adrs.city,'.') as full_address, 
-                    sc.abbr as adrs_str_abbr, pl.platform_name as platform_name, pl.id as platform_id,
+                    sc.abbr as adrs_str_abbr, pl.platform_name as platform_name, pl.id as platform_id, pl.reference as platform_reference,
 
                     ifnull(vub.balance,0) as balance,
                     ifnull(cm.points,0) as points

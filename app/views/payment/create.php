@@ -1,5 +1,5 @@
 <?php build('content') ?>
-    <div class="card">
+    <div class="card col-md-5 col-sm-12">
         <div class="card-header">
             <h4 class="card-title">Create Payment</h4>
             <?php Flash::show()?>
@@ -13,6 +13,7 @@
                 ]);
 
                 Form::hidden('customer_id', $customer->customer_id);
+                Form::hidden('parent_id', $parentId);
                 // Form::hidden()
             ?>
             <div class="table-responsive">
@@ -20,6 +21,8 @@
                     <tr>
                         <td colspan="2">
                             <h2><?php echo $customer->full_name?></h2>
+                            <h1><?php echo amountHTML(amountConvert($amountToPay, 'ADD'))?></h1>
+                            <span>Balance</span>
                         </td>
                     </tr>
                     <tr>
@@ -31,11 +34,16 @@
                             <div>Amount To Pay</div>
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="2">
-                            <button name="btn_cash" class="btn btn-primary form-control" type="submit" role="submit">CASH</button>
-                        </td>
-                    </tr>
+
+                    <!-- CASH PAYMENT FOR ADMIN AND PLATFORM ONLY -->
+                    <?php if(!isEqual(whoIs('user_type'), 'customer')) :?>
+                        <tr>
+                            <td colspan="2">
+                                <button name="btn_cash" class="btn btn-primary form-control" type="submit" role="submit">CASH</button>
+                            </td>
+                        </tr>
+                    <?php endif?>
+
                     <tr>
                         <td colspan="2">
                             <div class="mb-2">
@@ -67,11 +75,13 @@
                                 name="btn_redeem" type="submit" role="submit" <?php echo $customer->meta->points >= $paymentServicePointAccepted ? '' : 'disabled'?>>REDEEM/TOPUP</button>
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="2">
-                            <a href="<?php echo _route('transaction:index')?>" class="btn btn-warning form-control">Pay Later</a>
-                        </td>
-                    </tr>
+                    <?php if(!isEqual(whoIs('user_type'), 'customer')) :?>
+                        <tr>
+                            <td colspan="2">
+                                <a href="<?php echo _route('transaction:index')?>" class="btn btn-warning form-control">Pay Later</a>
+                            </td>
+                        </tr>
+                    <?php endif?>
                 </table>
             </div>
             <?php

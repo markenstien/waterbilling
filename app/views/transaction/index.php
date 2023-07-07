@@ -6,42 +6,29 @@
         </div>
         
         <div class="card-body">
-            <?php if(empty($containers)) :?>
+            <?php if(empty($transactions)) :?>
                 <p class="text-center">You have no transactions at the moment.</p>
             <?php else:?>
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered dataTable">
                         <thead>
                             <th>#</th>
-                            <th>Label</th>
-                            <th>Owner</th>
+                            <th>Customer</th>
+                            <th>Action</th>
+                            <th>Amount</th>
+                            <th>Staff</th>
                             <th>Water Station</th>
-                            <?php if(!isEqual(whoIs('user_type'), 'customer')) :?>
-                                <th>Action</th>
-                            <?php endif?>
                         </thead>
 
                         <tbody>
-                            <?php foreach($containers as $key => $row) :?>
+                            <?php foreach($transactions as $key => $row) :?>
                                 <tr>
                                     <td><?php echo ++$key?></td>
-                                    <td><?php echo $row->container_label?></td>
-                                    <td><?php echo wLinkDefault(_route('user:showCustomer',$row->cx_id), 
-                                        $row->full_name)?></td>
-                                    <td><?php echo wLinkDefault(_route('platform:show', $row->platform_id), 
-                                        $row->platform_name)?></td>
-                                    <?php if(!isEqual(whoIs('user_type'), 'customer')) :?>
-                                        <td>
-                                            <a href="<?php echo _route('transaction:deliverOrPickup', null, [
-                                                'id' => $row->container_id,
-                                                'action' => $action['pick_up']
-                                            ])?>">Pickup</a> |
-                                            <a href="<?php echo _route('transaction:deliverOrPickup', null, [
-                                                'id' => $row->container_id,
-                                                'action' => $action['delivery']
-                                            ])?>">Deliver</a> 
-                                        </td>
-                                    <?php endif?>
+                                    <td><?php echo $row->customer_name?></td>
+                                    <td><?php echo $row->parent_key?></td>
+                                    <td><?php echo amountHTML($row->amount)?></td>
+                                    <td><?php echo $row->staff_name?></td>
+                                    <td><?php echo $row->platform_name?></td>
                                 </tr>
                             <?php endforeach?>
                         </tbody>

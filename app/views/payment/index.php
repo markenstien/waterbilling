@@ -10,10 +10,12 @@
                     <thead>
                         <th>#</th>
                         <th>Reference</th>
+                        <th>Customer</th>
                         <th>Amount</th>
                         <th>Method</th>
-                        <th>Date</th>
                         <th>External Reference</th>
+                        <th>Status</th>
+                        <th>Date</th>
                         <th>Action</th>
                     </thead>
 
@@ -22,10 +24,12 @@
                             <tr>
                                 <td><?php echo ++$key?></td>
                                 <td><?php echo $row->reference?></td>
+                                <td><?php echo $row->full_name?></td>
                                 <td><?php echo $row->amount?></td>
                                 <td><?php echo $row->payment_method?></td>
-                                <td><?php echo $row->created_at?></td>
                                 <td><?php echo $row->payment_reference ?? 'N/A'?></td>
+                                <td><?php echo $row->approval_status?></td>
+                                <td><?php echo $row->created_at?></td>
                                 <td>
                                     <?php echo wLinkDefault(_route('payment:show', $row->id), 'Show Payment')?>
                                 </td>

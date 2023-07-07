@@ -20,6 +20,14 @@ use function PHPSTORM_META\map;
             'created_at'
         ];
 
+        public function get($id) {
+            return $this->getAll([
+                'where' => [
+                    'payment.id' => $id
+                ]
+            ])[0] ?? false;
+        }
+
         public function getAll($params = []) {
             $where = null;
             $order = null;
@@ -40,7 +48,8 @@ use function PHPSTORM_META\map;
             $this->db->query(
                 "SELECT payment.*, cx.full_name as full_name, 
                 cxadr.barangay as cx_barangay, cxadr.street as cx_street,
-                pl.id as platform_id, platform_name, pl.reference as platform_reference 
+                pl.id as platform_id, platform_name, pl.reference as platform_reference,
+                concat(user.firstname , ' ',user.lastname) as approver_name
                 FROM {$this->table} as payment 
                     LEFT JOIN customers as cx 
                         ON cx.id = payment.customer_id
@@ -48,6 +57,8 @@ use function PHPSTORM_META\map;
                         ON pl.id = cx.parent_id
                     LEFT JOIN address as cxadr
                         ON cx.address_id = cxadr.id
+                    LEFT JOIN users as user
+                        ON user.id = payment.approval_by
                 {$where} {$order} {$limit}"
             );
             return $this->db->resultSet();

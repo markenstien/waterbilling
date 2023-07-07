@@ -21,26 +21,25 @@
         
         public function index() {
             if (!authPropCheck($this->_userService::ACCESS_VENDOR_MANAGEMENT)) {
-
                 if(authPropCheck('customer')) {
-                    $this->data['containers'] = $this->container->getList([
+                    $this->data['transactions'] = $this->transaction->getAll([
                         'where' => [
                             'customer_id' => $this->data['whoIs']->id
                         ],
-                        'order' => 'cx.full_name asc'
+                        'order' => 'transaction.created_at desc'
                     ]);
                 } else {
-                    $this->data['containers'] = $this->container->getList([
+                    $this->data['transactions'] = $this->transaction->getAll([
                         'where' => [
                             'platform_id' => $this->data['whoIs']->parent_id
                         ],
-                        'order' => 'cx.full_name asc'
+                        'order' => 'transaction.created_at desc'
                     ]);
                 }
                 
             } else {
-                $this->data['containers'] = $this->container->getList([
-                    'order' => 'cx.full_name asc'
+                $this->data['transactions'] = $this->transaction->getAll([
+                    'order' => 'transaction.created_at desc'
                 ]);
             }
             $this->data['action'] = [

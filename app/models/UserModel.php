@@ -268,10 +268,15 @@
 					$this->addError("No User found");
 					return false;
 				} else {
+					$name = explode(' ', $user->full_name);
+
 					$customerData = new stdClass();
 					$customerData->id = $user->id;
-					$customerData->firstname = $user->firstname;
-					$customerData->username = $user->username;
+					$customerData->firstname = current($name);
+					$customerData->username = end($name);
+
+					$customerData->full_name = $user->full_name;
+
 					$customerData->profile = 'https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o=';
 					$customerData->user_type = 'customer';
 					$customerData->access_type = 'customer';
@@ -295,7 +300,8 @@
 		public function startAuth($id)
 		{
 			$this->db->query(
-				"SELECT user.*, platform.platform_name as parent_name
+				"SELECT user.*, platform.platform_name as parent_name,
+					concat(user.firstname, ' ', user.lastname) as full_name
 					FROM {$this->table} as user 
 					LEFT JOIN platforms as platform
 					ON platform.id = user.parent_id

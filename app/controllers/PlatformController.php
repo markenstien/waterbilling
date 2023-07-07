@@ -1,6 +1,10 @@
 <?php
     use Form\PlatformForm;
+    use Services\UserService;
+
     load(['PlatformForm'],APPROOT.DS.'form');
+    load(['UserService'], SERVICES);
+    
 
     class PlatformController extends Controller
     {
@@ -63,6 +67,11 @@
         }
 
         public function show($id) {
+
+            if(authPropCheck(UserService::TYPE_CUSTOMER,'user_type')) {
+                Flash::set("You have no access to this page.");
+                return request()->return();
+            }
             $platform = $this->model->get($id);
             $this->data['platform'] = $platform;
             $this->data['customers'] = $this->model->getCustomers($id);

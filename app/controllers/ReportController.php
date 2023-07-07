@@ -62,12 +62,12 @@
 						]
 					]);
 
-					$customers = $this->modelCustomer->all();
+					$customers = $this->modelCustomer->getList();
 
 					$this->seviceReport->setPayments($payments);
+					$this->seviceReport->setCustomers($customers);
 
 					$summary = $this->seviceReport->generateSummary();
-
 					$this->data['summary'] = $summary;
 				}
 			}

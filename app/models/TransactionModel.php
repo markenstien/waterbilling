@@ -51,4 +51,41 @@
             );
             return $this->db->single()->total_amount ?? 0;
         }
+
+        public function getAll($params = []) {
+            $where = null;
+            $order = null;
+            $limit = null;
+
+            if(!empty($params['where'])) {
+                $where = " WHERE ".parent::conditionConvert($params['where']);
+            }
+
+            if(!empty($params['order'])) {
+                $order = " ORDER BY {$params['order']} ";
+            }
+
+            if(!empty($params['limit'])) {
+                $limit = " LIMIT {$params['limit']} ";
+            }
+
+            $this->db->query(
+                "SELECT transaction.*,
+                    customer.full_name as customer_name,
+                    platform.platform_name as platform_name,
+                    concat(user.firstname, ' ',user.lastname) as staff_name
+
+                    FROM {$this->table} as transaction 
+                    LEFT JOIN users as user 
+                        ON user.id = transaction.user_id
+                    LEFT JOIN customers as customer 
+                        ON customer.id = transaction.customer_id
+                    LEFT JOIN platforms as platform
+                        ON platform.id = transaction.platform_id
+
+                    {$where} {$order} {$limit}"
+            );
+
+            return $this->db->resultSet();
+        }
     }

@@ -5,29 +5,23 @@
         'data' => [],
         'colors' => []
     ];
-
     $grpDProfitPlatformBarangay = [
         'labels' => [],
         'data' => [],
         'colors' => []
     ];
 
-    $dynamicGraphData = [
-        'profits' => [
-            'labels' => [],
-            'data' => [],
-            'colors' => []
-        ],
-        'customers' => [
-            'labels' => [],
-            'data' => [],
-            'colors' => []
-        ],
-        'transactions' => [
-            'labels' => [],
-            'data' => [],
-            'colors' => []
-        ]
+
+    $grpDCustomersPlatform = [
+        'labels' => [],
+        'data' => [],
+        'colors' => []
+    ];
+
+    $grpDCustomersBarangay = [
+        'labels' => [],
+        'data' => [],
+        'colors' => []
     ];
 ?>
     <div class="card">
@@ -138,6 +132,77 @@
                         </div>
                     </section>
                 </div>
+
+                <div class="card-body">
+                    <h4>Customers Summary</h4>
+                    <section>
+                        <label>Sort : Highest by Platform</label>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <th>#</th>
+                                        <th>Platform</th>
+                                        <th>Total Customers</th>
+                                    <thead>
+                                    <tbody>
+                                        <?php $counter = 0?>
+                                        <?php foreach($summary['customerReport']['byStations'] as $key => $row) :?>
+                                            <?php
+                                                $counter++;
+
+                                                $grpDCustomersPlatform['labels'][] = $row['name'];
+                                                $grpDCustomersPlatform['data'][] = count($row['customers']);
+                                                $grpDCustomersPlatform['colors'][] = '#'.random_color();
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $counter?></td>
+                                                <td><?php echo $row['name']?>(<?php echo $row['platform_reference']?>)</td>
+                                                <td><?php echo count($row['customers'])?></td>
+                                            </tr>
+                                        <?php endforeach?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-7"><canvas id="customersChartPlatform"></canvas></div>
+                        </div>
+                    </section>
+
+                    <?php echo wDivider(20)?>
+
+                    <section>
+                        <label>Sort : Highest by Barangay</label>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <th>#</th>
+                                        <th>Platform</th>
+                                        <th>Total Customers</th>
+                                    <thead>
+                                    <tbody>
+                                        <?php $counter = 0?>
+                                        <?php foreach($summary['customerReport']['byBarangays'] as $key => $row) :?>
+                                            <?php
+                                                $counter++;
+
+                                                $grpDCustomersBarangay['labels'][] = $row['street_name'];
+                                                $grpDCustomersBarangay['data'][] = count($row['customers']);
+                                                $grpDCustomersBarangay['colors'][] = '#'.random_color();
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $counter?></td>
+                                                <td><?php echo $row['street_name']?>(<?php echo $row['platform_reference']?>)</td>
+                                                <td><?php echo count($row['customers'])?></td>
+                                            </tr>
+                                        <?php endforeach?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-7"><canvas id="customersChartBarangay"></canvas></div>
+                        </div>
+                    </section>
+                </div>
             <?php endif?>
         </div>
 
@@ -149,6 +214,14 @@
             $grpDProfitPlatformBarangay['labels'] = graphParamImploder($grpDProfitPlatformBarangay['labels']);
             $grpDProfitPlatformBarangay['data'] = graphParamImploder($grpDProfitPlatformBarangay['data']);
             $grpDProfitPlatformBarangay['colors'] = graphParamImploder($grpDProfitPlatformBarangay['colors']);
+
+            $grpDCustomersPlatform['labels'] = graphParamImploder($grpDCustomersPlatform['labels']);
+            $grpDCustomersPlatform['data'] = graphParamImploder($grpDCustomersPlatform['data']);
+            $grpDCustomersPlatform['colors'] = graphParamImploder($grpDCustomersPlatform['colors']);
+
+            $grpDCustomersBarangay['labels'] = graphParamImploder($grpDCustomersBarangay['labels']);
+            $grpDCustomersBarangay['data'] = graphParamImploder($grpDCustomersBarangay['data']);
+            $grpDCustomersBarangay['colors'] = graphParamImploder($grpDCustomersBarangay['colors']);
 
         ?>    
     <?php endif?>
@@ -194,6 +267,20 @@ var colors = {
         ["<?php echo $grpDProfitPlatformBarangay['colors']?>"]);
   }
 
+  if($('#customersChartPlatform').length) {
+    var customersChartPlatform = ezChart('#customersChartPlatform', 'Customers', 
+        ["<?php echo $grpDCustomersPlatform['labels']?>"], 
+        ["<?php echo $grpDCustomersPlatform['data']?>"],
+        ["<?php echo $grpDCustomersPlatform['colors']?>"]);
+  }
+
+  if($('#customersChartBarangay').length) {
+    var customersChartBarangay = ezChart('#customersChartBarangay', 'Customers', 
+        ["<?php echo $grpDCustomersBarangay['labels']?>"], 
+        ["<?php echo $grpDCustomersBarangay['data']?>"],
+        ["<?php echo $grpDCustomersBarangay['colors']?>"]);
+  }
+  
   function ezChart(element, chartName, labels, data ,backgroundColor) {
 
     return new Chart($(element), {

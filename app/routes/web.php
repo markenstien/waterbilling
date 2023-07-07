@@ -125,7 +125,9 @@
 		'order' => $controller.'/orderReceipt',
 		'create' => $controller.'/create',
 		'delete' => $controller.'/destroy',
-		'show'   => $controller.'/show'
+		'show'   => $controller.'/show',
+		'approve' => $controller.'/approve',
+		'decline' => $controller.'/decline'
 	];
 
 	$controller = '/SupplyOrderController';

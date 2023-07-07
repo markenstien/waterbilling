@@ -50,6 +50,7 @@ License: For each use you must have a valid license purchased only from above li
 </head>
 <body>
     <?php $auth = auth()?>
+
     <?php
         $isVendorManagement = authPropCheck(UserService::ACCESS_VENDOR_MANAGEMENT);
         $isPlatformManagement = authPropCheck(UserService::ACCESS_PLATFORM_MANAGEMENT);
@@ -166,12 +167,14 @@ License: For each use you must have a valid license purchased only from above li
                                     <span class="menu-title">Dashboard</span>
                                 </a>
                             </li>
+                            
                             <li class="nav-item">
-                                <a class="nav-link" href="<?php echo _route('transaction:index')?>">
+                                <a class="nav-link" href="<?php echo _route('payment:index')?>">
                                     <i class="link-icon" data-feather="box"></i>
-                                    <span class="menu-title">Transaction</span>
+                                    <span class="menu-title">Payments</span>
                                 </a>
                             </li>
+                            
                             <?php if($isVendorManagement) :?>
                             <li class="nav-item">
                                 <a class="nav-link" href="<?php echo _route('platform:index')?>">
@@ -205,7 +208,12 @@ License: For each use you must have a valid license purchased only from above li
                                     <span class="menu-title">Containers</span>
                                 </a>
                             </li>
-
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?php echo _route('transaction:index')?>">
+                                    <i class="link-icon" data-feather="box"></i>
+                                    <span class="menu-title">Transaction</span>
+                                </a>
+                            </li>
                             <?php if($isPlatformManagement || $isVendorManagement) :?>
                             <li class="nav-item">
                                 <a href="#" class="nav-link">

@@ -1,4 +1,6 @@
 <?php
+    use Services\TransactionService;
+    load(['TransactionService'],SERVICES);
 
     class ContainerController extends Controller{
 
@@ -27,6 +29,10 @@
                 $this->data['containers'] = $this->model->getList();
             }
 
+            $this->data['action'] = [
+                'delivery' => TransactionService::DELIVERY,
+                'pick_up' => TransactionService::PICKUP
+            ];
             
             return $this->view('container/index', $this->data);
         }

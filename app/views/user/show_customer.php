@@ -14,7 +14,15 @@
                                 </tr>
                                 <tr>
                                     <td>Balance : </td>
-                                    <td><?php echo $balance?></td>
+                                    <td>
+                                        <?php echo $balance?>
+                                        <?php if(isEqual(whoIs('user_type'),'customer')) :?>
+                                            <?php echo wLinkDefault(_route('payment:create', null, [
+                                                'customerId' => whoIs('id'),
+                                                'amount' => abs($balance)
+                                            ]), 'Pay Balance')?>
+                                        <?php endif?>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>Points : </td>
