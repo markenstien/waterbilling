@@ -13,6 +13,7 @@
             $this->modelCustomer = model('CustomerModel');
             $this->transaction = model('TransactionModel');
             $this->customerMeta = model('CustomerMetaModel');
+            $this->modelPlatform = model('PlatformModel');
         }
 
         public function create() {
@@ -112,7 +113,8 @@
             $this->data['customer'] = $customer;
             $this->data['paymentServicePointAccepted'] = PaymentService::POINT_ACCCEPTED;
             $this->data['parentId'] = whoIs('parent_id');
-
+            $this->data['platform'] = $this->modelPlatform->get(whoIs('parent_id'));
+            
             return $this->view('payment/create', $this->data);
         }
         public function index() {

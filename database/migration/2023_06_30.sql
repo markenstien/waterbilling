@@ -13,3 +13,7 @@ create table sms_light(
 
 alter table customers
 	add column phone_number varchar(50);
+
+
+alter table users
+	add column phone varchar(50);

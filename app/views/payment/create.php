@@ -46,6 +46,7 @@
 
                     <tr>
                         <td colspan="2">
+                            <p class="mb-2">(Pay on this GCASH# : <?php echo $platform->contact_number?>)</p>
                             <div class="mb-2">
                                 <?php
                                     Form::label('Reference Number');
